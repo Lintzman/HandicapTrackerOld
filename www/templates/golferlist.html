@@ -1,0 +1,24 @@
+<ion-view view-title="Handicap History">
+  <ion-content>
+    <ion-list>
+      <ion-item class="golfer-list-item" ng-repeat="golfer in Golfers" href="#/app/handicaphistory/{{golfer.id}}">
+        <div class="golfer-container" ng-controller="oneCtrl"> 
+              <div class="golfer-container-inner{{golfer.id}}" data-drag="true" data-jqyoui-options="{axis: 'x'}" jqyoui-draggable="{animate: true, onStop: 'DragStopped'}">
+                  <div id="thegolfer">
+                        <div class="golfer-name-container">
+                            <div class="golfer-name">{{golfer.GolferName}} {{golfer.id}}</div>
+                            <div class="golflink-number">
+                                <span>Golf Link #</span> {{golfer.GolfLinkNumber}}</div>
+                        </div>
+                        <div class="golfer-handicap">Handicap {{golfer.Handicap}}</div>
+                  </div>
+                  <div class="golfer-action">
+                      <div class="golfer-action-item"><i class="ion-edit golfer-icon edit" ng-click="EditGolfer();"></i></div>
+                      <div class="golfer-action-item"><i class="ion-close-round golfer-icon delete" ng-click="DeleteGolfer();"></i></div>
+                  </div>
+              </div>
+            </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

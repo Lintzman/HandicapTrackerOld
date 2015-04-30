@@ -1,0 +1,35 @@
+<ion-side-menus enable-menu-with-back-views="true">
+  <ion-side-menu-content
+      drag-content="false" >
+    <ion-nav-bar class="bar-stable ht-header">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="right">
+          
+        <button class="button button-icon button-clear ion-refresh menu-icons" ng-click="updateHandicaps()"></button>
+        <button class="button button-icon button-clear ion-android-more-vertical menu-icons" menu-toggle="right"></button>
+        
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu class="side-nav-bg"
+      side="right"
+       width="225">
+    <ion-content>
+      <ion-list>
+        <ion-item nav-clear menu-close href="#/app/golfer" class="slide-menu-item" ng-click="showGolferDetails('add')">
+            <button class="button button-icon button-clear ion-person-add icon" ><span>Add Golfer</span></button>
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/golfer" class="slide-menu-item" ng-click="showGolferDetails2('edit', '90')">
+          <button class="button button-icon button-clear ion-person-add icon"><span>Edit Golfer</span></button>
+        </ion-item>
+        <ion-item nav-clear menu-close ng-click="showAbout()" class="slide-menu-item">
+         <button class="button button-icon button-clear ion-information-circled icon"><span>About</span></button>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>
