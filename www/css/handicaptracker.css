@@ -1,21 +1,19 @@
-.top {
-  position: fixed;
-  top: 44px;
-  background-color: pink;
-  left: 0px;
-   right: 0px;
-   z-index: 10005;
-}
-
 .test{
     background-color: pink;  
-    position: fixed;
-     top:44px;
-     text-align: center;
 }
 
 .test2{
     background-color: yellow;
+}
+
+.exactCenter {
+    width:400px;
+    height:100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -200px;
 }
 
 .ht-header,
@@ -28,6 +26,11 @@
 .golfer-list-item a.item-content{
     padding: 0px;
 }
+
+.golfer-list-item a.item-content.activated{
+    background-color: #77CCEB !important;
+}
+
 /*Overwrites default black by Ionic css*/
 .bar.bar-stable .title,
 .menu-icons{
@@ -45,6 +48,15 @@
     color: white !important;   
 }
 
+.ht-header .title{
+    left: 40px !important;
+}
+
+.bar-header-ht .title{
+    left: 65px !important;
+    font-weight: bold !important;
+}
+
 .slide-menu-item,
 .slide-menu-item a.item-content{
     padding: 0px !important;
@@ -54,11 +66,19 @@
 .slide-menu-item span{
     color: white !important; 
     padding-left: 15px !important;  
-    font-size: 20px !important;
+    font-size: 18px !important;
 }
 
 .slide-menu-item:nth-child(1){
     border-top-width: 0px;
+}
+
+.button-icon .icon:before, .button-icon.icon:before{
+    font-size: 30px !important;
+}
+
+.popup {
+  width: 300px !important;
 }
 
 /*Golfer handicap*/
@@ -88,7 +108,7 @@
     width: 100%;
     height: 30px;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
     padding-top: 10px;
     padding-left: 10px;
 }
@@ -113,7 +133,7 @@
     float: right;
     text-align: right;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
     padding-right: 25px;
 }
 
@@ -149,23 +169,42 @@
 
 
 /********** Start Modal Screen **********/
+
 .modal-message{
     font-size: 22px;
     font-weight: bold;
 }
 
 .modal-icon{
-    font-size: 32px;
+    padding-bottom: 25px;
 }
+
+.spinner svg {
+  stroke: #ffffff;
+  width: 38px;
+  height: 38px;
+}
+
+
+/*overwriting Ionic class as for some reason it doesn't inject this class when called */
+.modal{
+    background-color: rgba(0,0,0,0.7) !important;
+    text-align: center;
+    color: white;
+}
+
+
 /********** End Modal Screen **********/
 
 
 
 /********** Start Add/Edit Golfer **********/
-.golfer-toolbar{
+.golfer-toolbar,
+.bar-black{
     background-color: black !important;
 }
-.golfer-details-header{
+.golfer-details-header,
+.bar-title{
     color: white;
 }
 
@@ -173,10 +212,10 @@
     width: 100%;
     padding: 10px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
 }
 
-.form-label:nth-child(3){
+.form-label{
     padding-top: 35px;
 }
 .golfer-save{
@@ -202,74 +241,26 @@ div.error{
     color: red;
     font-weight: bold;
     padding: 6px 12px;
+    font-size: 16px;
 }
 /********** End Add/Edit Golfer **********/
 
 
-/*.center-div{
-    float: none;
-    margin: 0 auto;
-}
-
-.slide-background{
-    background-color: black;    
-    height: 100%;
-}
-.slide-item{
-    background-color: black;    
-    color: white;
-}
-.ht-navbar{
-    background-color: black !important;
-}
-.nav-title,
-.toolbar-header{
-    color: white !important;
-}
-
-
-.slide-icon{
-    font-size: 32px;
-    width: 1em;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-.header-container{
-        display:table;
-        width:100%;
-        table-layout:fixed;
-        height: 50px;
-}
-
-
-
-
-
-
-
-
-
-
-
-.header-row{
-    border-bottom: 1px black solid;
-    background-color: white;
-}
-
-.in-handicap-calcs{
-    background-color: #E77D00;
-}
+/*********** Start Handicap History ***********/
 .header-large-cell{
     text-align: center;
     height: 50px;
     display: table-cell;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 18px;
 }
 
-
-.header-small-col{
-    padding-left: 10px;
+.header-container{
+        display:table;
+        width:100%;
+        table-layout:fixed;
+        height: 50px;
 }
 
 .header-small-cell{
@@ -279,44 +270,77 @@ div.error{
 	width: 100%;
 	margin: 0 auto;
 	text-align: center;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
         color: white;
         background-color: #25AE5F;
 }
 
+.header-small-col{
+    padding-left: 8px !important;
+}
+
+.has-subheader-ht{
+    top: 94px !important;
+}
+
+.bar-header-ht{
+    border-bottom: none !important;
+}
+.bar-subheader-ht{
+    height: 51px !important;
+    padding: 0px !important;
+    border-top: none !important;
+    /*border-bottom-color: black !important;*/
+    border-bottom: black solid 1px !important;
+}
+
+.ht-row{
+    padding: 0px !important;
+}
+
+.ht-col{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.ht-col:nth-child(1){
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 50%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 50%;
+    -ms-flex: 0 0 50%;
+     flex: 0 0 50%; 
+     max-width: 50%;     
+}
+
+.ht-col:not(:first-child){
+        -webkit-box-flex: 0;
+    -webkit-flex: 0 0 12.5%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 12.5%;
+    -ms-flex: 0 0 12.5%;
+     flex: 0 0 12.5%; 
+     max-width: 12.5%; 
+     padding-right: 0px;
+     
+}
 
 .body-small-cell{
      text-align: center;
     line-height: 50px;
     height:50px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
-    padding-left: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-********* Start List Of Golfers *********
-.left {
-	text-align: left;
+.ht-item{
+    padding: 0px !important;
+    white-space: normal !important;
+    border-color: black !important;
 }
 
-
-    .item {
-      padding: 10px;
-      line-height: 1;
-    }
-    
-    .list__item{
-        padding: 0px;
-    }
-   
-********* End List Of Golfers **********/
+.in-handicap-calcs{
+    background-color: #E77D00;
+}
+/*********** End Handicap History ***********/

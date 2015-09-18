@@ -57,7 +57,7 @@ function populateDB(tx) {
 //    tx.executeSql("INSERT INTO golfers (GolferName, GolfLinkNumber, Handicap) VALUES ('Steven Wells', '3011890722', '6.2')");
 //    tx.executeSql("INSERT INTO golfers (GolferName, GolfLinkNumber, Handicap) VALUES ('John Smith', '3011890812', '17.8')");
     
-//    tx.executeSql("DELETE FROM handicaphistory");
+    //tx.executeSql("DELETE FROM handicaphistory");
 //    tx.executeSql("INSERT INTO handicaphistory (GolferID, Date, ClubAndComp, Score, DSR, ScratchRating, SlopeRating, Par, DailyHandicap, Gross, PlayedTo, NewExact, IncludedInHandicapCalcs) VALUES (87, '10/03/2015', 'Keysborough GC (Par)', '37', '74', '73', '131', '73', '8', '7.6', '3.5', '6.4', 'N');");	
 //    tx.executeSql("INSERT INTO handicaphistory (GolferID, Date, ClubAndComp, Score, DSR, ScratchRating, SlopeRating, Par, DailyHandicap, Gross, PlayedTo, NewExact, IncludedInHandicapCalcs) VALUES (87, '10/03/2015', 'Keysborough GC (Stroke)', '37', '74', '73', '131', '73', '8', '7.6', '3.5', '6.4', 'Y');");	
 //    tx.executeSql("INSERT INTO handicaphistory (GolferID, Date, ClubAndComp, Score, DSR, ScratchRating, SlopeRating, Par, DailyHandicap, Gross, PlayedTo, NewExact, IncludedInHandicapCalcs) VALUES (87, '10/03/2015', 'Keysborough GC (Stableford)', '37', '74', '73', '131', '73', '8', '7.6', '3.5', '6.4', 'N');");	
@@ -133,6 +133,24 @@ function UpdateGolferToDB(tx, golfer)
     var sql = "UPDATE golfers SET GolferName = ?, GolfLinkNumber = ? WHERE _id = ?";
     tx.executeSql(sql, [golfer.GolferName, golfer.GolfLinkNumber, golfer.GolferID], tx_success, tx_error);
 }
+
+
+function DeleteGolfer(golferID)
+{   
+    db.transaction(function(tx){
+        DeleteGolferFromDB(tx, golferID);
+    },
+        tx_error,
+        tx_success);
+    
+}
+
+function DeleteGolferFromDB(tx, golferID)
+{          
+    var sql = "DELETE FROM golfers WHERE _id = ?";
+    tx.executeSql(sql, [golferID], tx_success, tx_error);
+}
+
 
 
 function UpdateHandicapHistory(GolferID, HandicapHistory)

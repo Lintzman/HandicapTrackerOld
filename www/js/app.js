@@ -34,33 +34,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngDragDrop', 'handic
     url: "/golferlist",
     views: {
       'menuContent': {
-        templateUrl: "templates/golferlist.html"
+        templateUrl: "templates/golferlist.html",
+        controller: 'GolfersController'
 //        controller: 'MainController'
       }
     }
   })
   
-    
-  .state('app.golfer', {
-    url: "/golfer",
-    views: {
-      'menuContent': {
+    .state('golfer', {
+        url: "/golfer/:golferID",
         templateUrl: "templates/golfer.html",
-        controller: 'GolferController'
-      }
-    }
+        controller: 'GolferController'   
   })
-
-
-  .state('app.handicaphistory', {
-    url: "/handicaphistory/:golferID",
-    views: {
-      'menuContent': {
+  
+//   .state('app.golfer', {
+//        url: "/golfer",
+//        views: {
+//              'menuContent': {
+//                templateUrl: "templates/golfer.html",
+//                controller: 'GolferController'   
+//              }
+//            }
+//        
+//  })
+  
+  .state('handicaphistory', {
+        url: "/handicaphistory/:golferID",
         templateUrl: "templates/handicaphistory.html",
         controller: 'HandicapHistoryController'
-      }
-    }
   });
+  
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/golferlist');
 });

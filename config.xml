@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.c:\apache24\htdocs\handicaptracker441159" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>HandicapTracker</name>
+<widget id="com.ionicframework.handicaptracker441159" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Handicap Tracker</name>
   <description>
-        An Ionic Framework and Cordova project.
+        App to view handicap and handicap history for one or more golfers
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="lintzman@gmail.com" href="http://www.lintzonline.com">
+      Lintzman
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -13,7 +13,22 @@
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="BackupWebStorage" value="none"/>
+  <preference name="SplashScreen" value="screen"/>
+  <preference name="SplashScreenDelay" value="4000"/>
+
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
+  <platform name="android">
+    <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
+    <icon src="resources\android\icon\drawable-mdpi-icon.png" density="mdpi"/>
+	<splash src="res/res-land-hdpi/screen.png" density="land-hdpi"/>
+    <splash src="res/res-land-ldpi/screen.png" density="land-ldpi"/>
+    <splash src="res/res-land-mdpi/screen.png" density="land-mdpi"/>
+    <splash src="res/res-land-xhdpi/screen.png" density="land-xhdpi"/>
+    <splash src="res/res-port-hdpi/screen.png" density="port-hdpi"/>
+    <splash src="res/res-port-ldpi/screen.png" density="port-ldpi"/>
+    <splash src="res/res-port-mdpi/screen.png" density="port-mdpi"/>
+    <splash src="res/res-port-xhdpi/screen.png" density="port-xhdpi"/>
+  </platform>
 </widget>

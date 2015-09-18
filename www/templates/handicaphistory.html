@@ -1,3 +1,74 @@
-<ion-view view-title="Handicap History1234">
-This is a test
+<ion-view view-title="Scoring History">
+
+    <ion-header-bar align-title="left" class="bar-black bar-header-ht">
+      <div class="buttons">
+        <button class="button icon-left ion-chevron-left button-clear button-light" ng-click="myGoBack()"></button>
+        <img src="img/logo.png" height="36" width="36">
+      </div>
+      <h1 class="title bar-title">Handicap History</h1>
+
+    </ion-header-bar>
+   
+    <div class="bar bar-subheader bar-subheader-ht">
+        <div class="row ht-row">
+            <div class="col ht-col">
+                <div class="header-large-cell">Date - Golf Club (Comp) - Slope - Par - SR - DSR</div>
+            </div>
+            <div class="col header-small-col ht-col">
+                <div class="header-container">
+                    <div class="header-small-cell">Score</div> 
+                </div>
+            </div>
+            <div class="col header-small-col ht-col">
+                <div class="header-container">
+                    <div class="header-small-cell">Daily HC</div>
+                </div>
+            </div>
+            <div class="col header-small-col ht-col">
+                <div class="header-container">
+                    <div class="header-small-cell">Played To</div>
+                </div>
+            </div>
+            <div class="col header-small-col ht-col">
+                <div class="header-container">
+                    <div class="header-small-cell">New HC</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <ion-content class="has-subheader-ht">
+        
+        <ion-list>
+            <ion-item ng-repeat="history in HandicapHistory" class="ht-item">
+                <div class="row ht-row" ng-class="getBackgroundClass( {{history}} )">
+                  <div class="col ht-col">
+                      <div class="header-large-cell">{{history.Date}} - {{history.ClubAndComp}} - {{history.SlopeRating}} - {{history.Par}} - {{history.ScratchRating}} - {{history.DSR}}</div>
+                  </div>
+                  <div class="col header-small-col ht-col">
+                      <div class="header-container">
+                          <div class="body-small-cell">{{history.Score}}</div> 
+                      </div>
+                  </div>
+                  <div class="col header-small-col ht-col">
+                      <div class="header-container">
+                          <div class="body-small-cell">{{history.DailyHandicap}}</div>
+                      </div>
+                  </div>
+                  <div class="col header-small-col ht-col">
+                      <div class="header-container">
+                          <div class="body-small-cell">{{history.PlayedTo}}</div>
+                      </div>
+                  </div>
+                  <div class="col header-small-col ht-col">
+                      <div class="header-container">
+                          <div class="body-small-cell">{{history.NewExact}}</div>
+                      </div>
+                  </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+
 </ion-view>

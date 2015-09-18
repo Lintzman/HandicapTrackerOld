@@ -1,25 +1,31 @@
-<ion-view view-title="Golfer Details">
+<ion-view cache-view="false" view-title="Golfer Details">
+    <form name="golferForm" ng-submit="submitGolferForm(golferForm)" novalidate>
+    <ion-header-bar align-title="left" class="bar-black bar-header-ht">
+      <div class="buttons">
+        <button class="button icon-left ion-chevron-left button-clear button-light" ng-click="myGoBack()"></button>
+        <img src="img/logo.png" height="36" width="36">
+      </div>
+      <h1 class="title bar-title">Golfer Details</h1>
 
-    <!--<ons-toolbar class="golfer-toolbar">
-        <div class="left golfer-details-header"><ons-back-button>Back</ons-back-button></div>
-        <div class="center golfer-details-header">Golfer Details</div>
-      </ons-toolbar>-->
-        
-      <form name="golferForm" ng-submit="submitGolferForm()" novalidate>
-        <div class="form-label">Golfer Name</div>
-        <div>
-            <input class="text-input ht-input" name="golferName" ng-model="GolferDetails.GolferName" placeholder="Enter golfer name..." required>
-            <div ng-show="golferForm.golferName.$invalid && golferForm.$submitted"  class="error">Please enter a golfer name</div>
-        </div>
+    </ion-header-bar>
+    <ion-content>
+      
+            <div class="form-label">Golfer Name</div>
+            <div>
+                <input class="text-input ht-input" name="golferName" ng-model="GolferDetails.GolferName" placeholder="Enter golfer name..." required>
+                <div ng-show="golferForm.golferName.$invalid && golferForm.$submitted"  class="error">Please enter a golfer name</div>
+            </div>
 
-        <div class="form-label">Golf Link Number</div>
-        <div>
-            <input class="text-input ht-input" name="golflinkNumber" ng-model="GolferDetails.GolfLinkNumber" placeholder="Enter Golf Link number..." required>
-            <div ng-show="golferForm.golflinkNumber.$invalid && golferForm.$submitted" class="error">Please enter a Golf Link number</div>
-        </div>
-  
-        <button type="submit" class="button button-block button-positive golfer-save">Save</button>
+            <div class="form-label">Golf Link Number</div>
+            <div>
+                <input class="text-input ht-input" name="golflinkNumber" ng-model="GolferDetails.GolfLinkNumber" placeholder="Enter Golf Link number..." required>
+                <div ng-show="golferForm.golflinkNumber.$invalid && golferForm.$submitted" class="error">Please enter a Golf Link number</div>
+            </div>
 
-      </form>
+            <button type="submit" class="button button-block button-positive golfer-save">Save</button>
+
+          </form>
     
+    </ion-content>
+
 </ion-view>

@@ -2,42 +2,6 @@
   'use strict';
   var golfApp = angular.module('handicaptracker', []);
  
-golfApp.controller('oneCtrl', function($scope) {
-	
-    $scope.DragStopped = function(id) {
-        var className = $(id.target).attr('class').split(' ')[0];
-            //snap golfer with edit/delete options
-            if(parseInt($("." + className).css("left")) < -30){
-                    //alert("snap");
-                    $("." + className).animate({left: '-150px'});
-            }
-
-            //snap just golfer
-            if(parseInt($("." + className).css("left")) >= -30){
-                    //alert("snap");
-                    $("." + className).animate({left: '0px'});
-            }
-
-            console.log(parseInt($("." + className).css("left")));
-    };
-    
-    $scope.EditGolfer = function()
-    {
-        alert("Edit Golfer");
-    };
-    
-    $scope.DeleteGolfer = function()
-    {
-        alert("Delete Golfer");
-    };
-});
-
-  golfApp.controller('AppController', function($scope) {
-      
-    $scope.title = "Handicap Tracker"  ;
-     
-  });
-
 
 ////This service holds all the golfers so all handicaps can be refreshed via the refresh menu button
 //golfApp.service('golfersService', function() {
@@ -59,23 +23,23 @@ golfApp.controller('oneCtrl', function($scope) {
 //});
 
     golfApp.service('sharedProperties', function() {
-        var golferID = -1;
-        var mode = "";
+        //var golferID = -1;
+        //var mode = "";
         var reloadGolfers = false;
         
         return {
-            getGolferID: function() {
-                return golferID;
-            },
-            setGolferID: function(value) {
-                golferID = value;
-            },
-            getMode: function() {
-                return mode;
-            },
-            setMode: function(value) {
-                mode = value;
-            },
+//            getGolferID: function() {
+//                return golferID;
+//            },
+//            setGolferID: function(value) {
+//                golferID = value;
+//            },
+//            getMode: function() {
+//                return mode;
+//            },
+//            setMode: function(value) {
+//                mode = value;
+//            },
             getReloadGolfers: function() {
                 return reloadGolfers;
             },
@@ -87,7 +51,7 @@ golfApp.controller('oneCtrl', function($scope) {
     });
 
       
-  golfApp.controller('MainController' ,function($scope, $ionicPopup, $ionicModal, golfersFactory, sharedProperties, $data, $http, parseFactory, $timeout) {
+golfApp.controller('MainController' ,function($scope, $ionicPopup, $ionicModal, golfersFactory, sharedProperties, $data, $http, parseFactory, $timeout, $ionicHistory, $ionicLoading) {
     
     $scope.showAbout = function() {
             var alertPopup = $ionicPopup.alert({
@@ -99,22 +63,22 @@ golfApp.controller('oneCtrl', function($scope) {
               });
          };
          
-    //    ons.ready(function() {
-//        navi.on('postpop', function(event) {
-//
-//            //Check if the list of golfers should be reloaded
-//            if(sharedProperties.getReloadGolfers())
-//            {
-//                //reload the golfers
-//                golfersFactory.getGolfers().then(function(golfers) {
-//                    $scope.Golfers = golfers;
-//                  });
-//            }
-//            
-//            //set to false after each time the golfers page is viewed
-//            sharedProperties.setReloadGolfers(false);
-//        });
-//      });
+        
+    $scope.$on('$locationChangeStart', function( event ) {
+        //Check if the list of golfers should be reloaded
+        if(sharedProperties.getReloadGolfers())
+        {
+            //reload the golfers
+            golfersFactory.getGolfers().then(function(golfers) {
+                $scope.Golfers = golfers;
+              });
+              
+              $ionicHistory.clearHistory();
+        }
+
+        //set to false after each time the golfers page is viewed
+        sharedProperties.setReloadGolfers(false);
+    });
 
       //$scope.Golfers = $data.items;
     golfersFactory.getGolfers().then(function(golfers) {
@@ -123,13 +87,6 @@ golfApp.controller('oneCtrl', function($scope) {
     });
             
             
-//    $scope.showHandicapHistory = function(index) {
-//     
-//      var selectedItem = $scope.Golfers[index];
-//      
-//       golfersFactory.selectedItem = selectedItem;
-//            //$scope.navi.pushPage('partials/handicapHistory.html');
-//     };
    
    $ionicModal.fromTemplateUrl('templates/refresh-modal.html', {
         scope: $scope,
@@ -149,35 +106,36 @@ golfApp.controller('oneCtrl', function($scope) {
         
         var getHandicapHistory = function(Golfer)
         {
+            
             //http://handicap.golflink.com.au/HandicapHistoryFull.aspx?framed=1&skip=1&golflink_no=3011890722
-                //return $http.get("http://handicap.golflink.com.au/HandicapHistoryFull.aspx?", {params:{"golflink_no": Golfer.GolfLinkNumber, "skip": "1"}}).then(function(response) {
-                    return $http.get("http://www.golflink.com.au/handicap-history/?", {params:{"golflink_No": Golfer.GolfLinkNumber, "skip": "1"}}).then(function(response) {
-
+            //return $http.get("http://www.golflink.com.au/handicap-history/?", {params:{"golflink_No": Golfer.GolfLinkNumber, "skip": "1"}}).then(function(response) {
+                return $http.get("http://handicap.golflink.com.au/HandicapHistoryFull.aspx?", {params:{"golflink_no": Golfer.GolfLinkNumber, "skip": "1"}}).then(function(response) {
+                    //return $http.get("http://ip.jsontest.com/").then(function(response) {
+                    //success handler
+                    //alert("Success");
                     var data = response.data;
                     var result = {
                         "Golfer": Golfer,
                         "PageSource": data
-                    };
+                    };                       
+                       
+                    return result;
                     
-//                    
-                        //status = response.status,
-                        //header = response.header,
-                        //config = response.config;
-                       
-                       
-                    return result;
-                    // success handler
                 }, function(response) {
+                    //data, status
+                    //alert(response.data);
+                    //alert(response.status);
+                    //alert(response.headers);
+                    //alert(response.config);
+                    
                     var data = response.data;
                     var result = {
                         "Golfer": Golfer,
                         "PageSource": data
                     };
-                        //status = response.status,
-                        //header = response.header,
-                        //config = response.config;
+
                     return result;
-                    // error handler
+                    
                 });
         },
         parseHandicapHistory = function(resultObj) 
@@ -202,7 +160,8 @@ golfApp.controller('oneCtrl', function($scope) {
                  if($scope.Golfers.length === golferCounter)
                  {
                     $scope.modal.hide();
-
+                    
+                    $ionicLoading.show({ template: 'Handicap Information Updated', noBackdrop: true, duration: 1500 });
                     //reload the golfers
                     golfersFactory.getGolfers().then(function(golfers) {
                         $scope.Golfers = golfers;
@@ -212,86 +171,102 @@ golfApp.controller('oneCtrl', function($scope) {
               
             }, 0 );
               
-
-
-//            return parseFactory.parseHandicapHistory(resultObj.PageSource).then(function(handicapHistory)
-//                    {
-//                        var result = {
-//                            "Golfer": resultObj.Golfer,
-//                            "HandicapHistory": handicapHistory
-//                        };
-//                        return result;
-//                    });
         };
-//        ,
-//        saveHandicapHistory = function(resultObj)
-//        {
-//            
-//            golferCounter++;
-//            //save the handicap history only if there are results
-//            UpdateHandicapHistory(resultObj.Golfer.id, resultObj.HandicapHistory);
-//          
-//            
-//            if($scope.Golfers.length === golferCounter)
-//            {
-//                $scope.modal.hide();
-//                
-//                //reload the golfers
-//                golfersFactory.getGolfers().then(function(golfers) {
-//                    $scope.Golfers = golfers;
-//                  });
-//            }
-//            
-//        };
-        
+
         
         for(var i = 0; i < $scope.Golfers.length; i++) {
             //var id = $scope.Golfers[i].id;
             var Golfer = $scope.Golfers[i];
             
             getHandicapHistory(Golfer)
-                    .then(parseHandicapHistory);
-                    //.then(saveHandicapHistory);
-                           
+                    .then(parseHandicapHistory);                           
         }
         
-        //this closes the modal after 2 seconds
-        //setTimeout('modalGetHandicaps.hide()', 2000);
         
     };
     
     
-    $scope.showGolferDetails = function(mode)
+    $scope.DeletingGolfer = false;
+    $scope.DeleteGolfer = function(golferID)
     {
-       sharedProperties.setMode(mode);
-       sharedProperties.setGolferID(-1); 
-    };
+        if($scope.DeletingGolfer === false)
+        {
+            $scope.DeletingGolfer = true;
+            var confirmPopup = $ionicPopup.confirm({
+              title: 'Delete Golfer',
+              template: 'Are you sure you want to delete this golfer?'
+            });
+            confirmPopup.then(function(res) {
+              if(res) {
+               //delete gofler and reload
+               DeleteGolfer(golferID);
+               
+               //reload the golfers
+                golfersFactory.getGolfers().then(function(golfers) {
+                    $scope.Golfers = golfers;
+                });
+              
+                $ionicHistory.clearHistory();
+               }
 
-    $scope.showGolferDetails2 = function(mode, id)
-    {
-        sharedProperties.setMode(mode);
-        sharedProperties.setGolferID(id); 
+              $scope.DeletingGolfer = false;
+            });         
+              
+        }
+
     };
          
   });
 
-   
+golfApp.controller('GolfersController', function($scope, $ionicPopup, sharedProperties) {
+	
+    $scope.DragStopped = function(id) {
+        var className = $(id.target).attr('class').split(' ')[0];
+            //snap golfer with edit/delete options
+            if(parseInt($("." + className).css("left")) < -30){
+                    //alert("snap");
+                    $("." + className).animate({left: '-150px'});
+            }
+
+            //snap just golfer
+            if(parseInt($("." + className).css("left")) >= -30){
+                    //alert("snap");
+                    $("." + className).animate({left: '0px'});
+            }
+
+            //console.log(parseInt($("." + className).css("left")));
+    };
     
-golfApp.controller('GolferController', function($scope, golferFactory, sharedProperties, $ionicHistory) {
+});
+
+golfApp.controller('GolferController', function($scope, golferFactory, sharedProperties, $ionicHistory, $stateParams) {
     
-   
-    //get the selected golfer details
-    golferFactory.getGolfer(sharedProperties.getGolferID()).then(function(golfer){
-        $scope.GolferDetails = golfer;
+    $scope.myGoBack = function() {
+        
+        $ionicHistory.goBack();
+    };
+  
+    $scope.Mode = "";
+    $scope.$on('$ionicView.enter', function(){
+        
+        var golferID = $stateParams.golferID;
+        $scope.Mode = golferID === "" ? "add" : "edit";
+        
+        //get the selected golfer details
+        golferFactory.getGolfer(golferID).then(function(golfer){
+            $scope.GolferDetails = golfer;
+        });
     });
+
     
      //function to submit the form after all validation has occurred            
-    $scope.submitGolferForm = function() {
+    $scope.submitGolferForm = function(theForm) {
 
         // check to make sure the form is valid before saving
-        if ($scope.golferForm.$valid) {
+        if(theForm.$valid) {
+//        if ($scope.golferForm.$valid) {
             //check if adding a new golfer or simply saving an existing one
-            if(sharedProperties.getMode() === "add")
+            if($scope.Mode === "add")
             {
                 InsertGolfer($scope.GolferDetails);
             }
@@ -301,10 +276,12 @@ golfApp.controller('GolferController', function($scope, golferFactory, sharedPro
             }
             
             sharedProperties.setReloadGolfers(true);
+            
+            //clear the form for the next time the window opens
+            theForm.$setPristine();
+            
             //this should close the golfer page and go back to the list of golfers
-            $ionicHistory.viewHistory(); 
             $ionicHistory.goBack();
-             ////$scope.navi.popPage();
         }
         
 
@@ -312,11 +289,17 @@ golfApp.controller('GolferController', function($scope, golferFactory, sharedPro
 
 });
 
-golfApp.controller('HandicapHistoryController', function($scope, golfersFactory, handicapHistoryFactory) {
+golfApp.controller('HandicapHistoryController', function($scope, handicapHistoryFactory, $ionicHistory, $stateParams) {
          
-//      handicapHistoryFactory.getHandicapHistory(golfersFactory.selectedItem.id).then(function(history) {
-//        $scope.HandicapHistory = history;
-//      });
+    $scope.myGoBack = function() {
+        $ionicHistory.goBack();
+    };
+    
+    var golferID = $stateParams.golferID;
+    
+      handicapHistoryFactory.getHandicapHistory(golferID).then(function(history) {
+        $scope.HandicapHistory = history;
+      });
          
      $scope.getBackgroundClass = function(inCalcs){
 
@@ -327,6 +310,7 @@ golfApp.controller('HandicapHistoryController', function($scope, golfersFactory,
         }
     };
   });
+  
   
   golfApp.factory('golfersFactory', function($q, $rootScope) {
 
@@ -417,13 +401,18 @@ golfApp.controller('HandicapHistoryController', function($scope, golfersFactory,
 
             db.transaction(function(tx)  {
                 tx.executeSql("SELECT * FROM GOLFERS WHERE _id = ?", [golferID], function(tx, res) {
+                    
+                    result = {
+                            GolferID : -1, 
+                            GolferName : '', 
+                            GolfLinkNumber : ''
+                        };
                     for(var i = 0; i < res.rows.length; i++) {
                         
-                        result = {
-                            GolferID : res.rows.item(i)._id, 
-                            GolferName : res.rows.item(i).GolferName, 
-                            GolfLinkNumber : res.rows.item(i).GolfLinkNumber
-                        };
+                        result.GolferID = res.rows.item(i)._id;
+                        result.GolferName = res.rows.item(i).GolferName;
+                        result.GolfLinkNumber = res.rows.item(i).GolfLinkNumber;
+                        
                     }
                     deferred.resolve(result);
                     $rootScope.$apply();
@@ -450,10 +439,12 @@ golfApp.controller('HandicapHistoryController', function($scope, golfersFactory,
             var handicapHistory = [];
             deferred = $q.defer();
             
-            var SPAN_CLASS = "<span class";
-	    var NEW_ROUND = "trow";
+            var TD = "<td";
+	    var NEW_ROUND = "matescompresults";// class=\"alt";
+            var HREF = "href";
 	    //Find first trow. If not found then exit
 	    var startPos = pageSource.indexOf(NEW_ROUND);
+            var previousPos = -1;
             while (startPos > -1)
             {
                 var handicapRow = "";
@@ -461,42 +452,109 @@ golfApp.controller('HandicapHistoryController', function($scope, golfersFactory,
                 var endPos = 0;
 
                 //Get the Date and Course
-                startPos = pageSource.indexOf("href", startPos);
+                //startPos = pageSource.indexOf("href", startPos);
                 startPos = pageSource.indexOf(">", startPos) + 1;
                 endPos = pageSource.indexOf("<", startPos);
 
                 handicapRow = pageSource.substring(startPos, endPos);
-
+                handicapRow = handicapRow.replace("Comp ", "");
 
                 var info = "";
                 //Now get the rest of the handicap information
-                for (var x = 1; x <= 9; x++)
+                for (var x = 1; x <= 10; x++)
                 {
-                    startPos = pageSource.indexOf(SPAN_CLASS, startPos) + 1;
-                    startPos = pageSource.indexOf(SPAN_CLASS, startPos) + SPAN_CLASS.length;
-                    startPos = pageSource.indexOf(">", startPos) + 1;
-                    endPos = pageSource.indexOf("</span", startPos);
-                    info = CleanInfo(pageSource.substring(startPos, endPos));
-
-                    //Played To has a 3rd span so need to check. The 3rd span is an indicator if the score is in the top 8 handicap calculations
-                    if (x === 8)
+                    startPos = pageSource.indexOf(TD, startPos) + 1;
+                    startPos = pageSource.indexOf(TD, startPos) + TD.length;
+                    
+                    //Included In Handicap Calculations is parsed slightly different
+                    if(x == 9)
                     {
-                        var tempPos = info.indexOf("span");
+                        endPos = pageSource.indexOf(">", startPos) + 1;
+                        info = CleanInfo(pageSource.substring(startPos, endPos));
+                        
+                        var tempPos = info.indexOf("class=\"flag");
                         if (tempPos > -1)
                         {
                             IncludedInHandicapCalculations = true;
-                            startPos = pageSource.indexOf(">", endPos) + 1;
-                            endPos = pageSource.indexOf("</span", startPos);
-                            info = CleanInfo(pageSource.substring(startPos, endPos));
                         }
                     }
+                      //Adjusted Gross requires different parsing
+                    else if (x == 7 || x == 8)
+                    {
+                        startPos = pageSource.indexOf(HREF, startPos) + HREF.length;
+                    }
+                    
+                    startPos = pageSource.indexOf(">", startPos) + 1;
+                    endPos = pageSource.indexOf("<", startPos);
+                    info = CleanInfo(pageSource.substring(startPos, endPos));
 
                     handicapRow = handicapRow + ", " + info;
                 }
                 
+                
                 startPos =  pageSource.indexOf(NEW_ROUND, startPos);
+                
+                if(startPos <= previousPos)
+                {
+                    startPos = -1;
+                }
+                else
+                {
+                    previousPos = startPos;
+                }
+
+                    
                 handicapHistory.push(MapHandicapHistory(handicapRow + "," + IncludedInHandicapCalculations));
-            }    
+            } 
+            
+            //Old method
+//            var SPAN_CLASS = "<span class";
+//	    var NEW_ROUND = "trow";
+//	    //Find first trow. If not found then exit
+//	    var startPos = pageSource.indexOf(NEW_ROUND);
+//            while (startPos > -1)
+//            {
+//                var handicapRow = "";
+//                var IncludedInHandicapCalculations = false;
+//                var endPos = 0;
+//
+//                //Get the Date and Course
+//                startPos = pageSource.indexOf("href", startPos);
+//                startPos = pageSource.indexOf(">", startPos) + 1;
+//                endPos = pageSource.indexOf("<", startPos);
+//
+//                handicapRow = pageSource.substring(startPos, endPos);
+//
+//
+//                var info = "";
+//                //Now get the rest of the handicap information
+//                for (var x = 1; x <= 9; x++)
+//                {
+//                    startPos = pageSource.indexOf(SPAN_CLASS, startPos) + 1;
+//                    startPos = pageSource.indexOf(SPAN_CLASS, startPos) + SPAN_CLASS.length;
+//                    startPos = pageSource.indexOf(">", startPos) + 1;
+//                    endPos = pageSource.indexOf("</span", startPos);
+//                    info = CleanInfo(pageSource.substring(startPos, endPos));
+//
+//                    //Played To has a 3rd span so need to check. The 3rd span is an indicator if the score is in the top 8 handicap calculations
+//                    if (x === 8)
+//                    {
+//                        var tempPos = info.indexOf("span");
+//                        if (tempPos > -1)
+//                        {
+//                            IncludedInHandicapCalculations = true;
+//                            startPos = pageSource.indexOf(">", endPos) + 1;
+//                            endPos = pageSource.indexOf("</span", startPos);
+//                            info = CleanInfo(pageSource.substring(startPos, endPos));
+//                        }
+//                    }
+//
+//                    handicapRow = handicapRow + ", " + info;
+//                }
+//                
+//                startPos =  pageSource.indexOf(NEW_ROUND, startPos);
+//                handicapHistory.push(MapHandicapHistory(handicapRow + "," + IncludedInHandicapCalculations));
+//            }    
             deferred.resolve(handicapHistory);
             $rootScope.$apply();
             
@@ -521,17 +579,17 @@ golfApp.controller('HandicapHistoryController', function($scope, golfersFactory,
 
             //now map
             Date: splitInfo[0], //date
-            ClubAndComp: splitInfo[1], //club and comp
-            Score: splitInfo[2],
-            DSR: splitInfo[3],
-            ScratchRating: splitInfo[4],
-            SlopeRating: splitInfo[5],
-            Par: splitInfo[6],
-            DailyHandicap: splitInfo[7],
-            Gross: splitInfo[8],
-            PlayedTo: splitInfo[9],
-            NewExact: splitInfo[10],
-            IncludedInHandicapCalcs: splitInfo[11]
+            ClubAndComp: splitInfo[1] + " " + splitInfo[2], //club and comp
+            Score: splitInfo[3],
+            DSR: splitInfo[4],
+            ScratchRating: splitInfo[5],
+            SlopeRating: splitInfo[6],
+            Par: splitInfo[7],
+            DailyHandicap: splitInfo[8],
+            Gross: splitInfo[9],
+            PlayedTo: splitInfo[10],
+            NewExact: splitInfo[12],
+            IncludedInHandicapCalcs: splitInfo[13]
         };
         return handicapHistory;
     }
